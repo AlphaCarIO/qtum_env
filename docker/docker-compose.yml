@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  qtum_base:
+    build:
+      context: ./qtum_base
+      dockerfile: Dockerfile
+    image: alphacar/qtum_base
+    container_name: qtum_base
+
+  test:
+    image: alphacar/qtum_base
+    container_name: qtum_base_testnet
+    volumes:
+      - ./:/dapp:rw
+    ports:
+      - "9899:9899"
+      - "9888:9888"
+      - "3889:3889"
+      - "13888:13888"
+    environment:
+      - QTUM_NETWORK=testnet
+    depends_on:
+      - qtum_base
+
+  main:
+    image: alphacar/qtum_base
+    container_name: qtum_base_mainnet
+    volumes:
+      - ./:/dapp:rw
+    ports:
+      - "19899:9899"
+      - "19888:9888"
+      - "13889:3889"
+      - "23888:13888"
+    environment:
+      - QTUM_NETWORK=mainnet
+    depends_on:
+      - qtum_base
